@@ -7,8 +7,8 @@ function TodoList() {
 
   return (
     <ul className="todo-list">
-      {filteredTodos.map((todo, index) => (
-        <TodoItem key={index} index={index} todo={todo} />
+      {filteredTodos.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>
   );

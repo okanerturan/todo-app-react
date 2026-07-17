@@ -15,9 +15,9 @@ function Footer() {
       <ul className="filters">
         {["all", "active", "completed"].map((f) => (
           <li key={f}>
-            <a className={classNames({ selected: filter === f })} onClick={() => setFilter(f)}>
+            <button type="button" className={classNames({ selected: filter === f })} onClick={() => setFilter(f)}>
               {f.charAt(0).toUpperCase() + f.slice(1)}
-            </a>
+            </button>
           </li>
         ))}
       </ul>

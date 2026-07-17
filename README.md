@@ -1,6 +1,6 @@
 # React ToDo App
 
-This project is a React implementation of the ToDo application by [Dmitry Sharabin](https://codepen.io/dmitrysharabin/pen/MWgQNYZ). It has been developed as part of the Patika Bootcamp Week 12 assignment. The CSS styling was imported as-is from the original project without any changes, while the rest of the application was ported to React.
+This project is a React implementation of the ToDo application by [Dmitry Sharabin](https://codepen.io/dmitrysharabin/pen/MWgQNYZ), developed as part of the Patika Bootcamp Week 12 assignment. Its visual foundation comes from the original project and has been adapted for the React implementation and accessible controls.
 
 
 ## Live Demo
@@ -23,6 +23,8 @@ You can try out the live demo of the application [here](https://todo-app-react-e
 
 The application uses React's Context API to manage state globally, allowing for efficient management of the ToDo list data without passing props down through many levels of components.
 
+Each task receives a stable identifier. Filtering therefore changes only what is displayed: editing, completing, or deleting an item always targets that task in the full persisted list. Existing browser data without identifiers is migrated when loaded, and malformed storage falls back safely to the starter list.
+
 ## Components
 
 The application is structured into several React components:
@@ -32,3 +34,15 @@ The application is structured into several React components:
 - **TodoList**: Renders the list of ToDo items.
 - **TodoItem**: Represents each individual ToDo with options to edit and delete.
 - **Footer**: Displays remaining item count and filter options.
+
+## Verification
+
+The behavior suite drives the public UI through add, complete, filter, edit, delete, and clear flows. It also protects filtered-list identity and malformed-storage recovery. CI runs these checks alongside lint and the production build:
+
+```sh
+# Node.js 20.19 or newer
+npm ci
+npm test
+npm run lint
+npm run build
+```
