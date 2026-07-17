@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { useTodos } from "../useTodos";
 
-function TodoItem({ index, todo }) {
+function TodoItem({ todo }) {
   const { toggleTodo, deleteTodo, updateTodo } = useTodos();
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
@@ -17,7 +17,7 @@ function TodoItem({ index, todo }) {
 
   const handleBlur = () => {
     setIsEditing(false);
-    updateTodo(index, editText);
+    updateTodo(todo.id, editText);
   };
 
   const handleKeyDown = (e) => {
@@ -29,9 +29,15 @@ function TodoItem({ index, todo }) {
   return (
     <li className={classNames({ completed: todo.done, editing: isEditing })}>
       <div className="view">
-        <input className="toggle" type="checkbox" checked={todo.done} onChange={() => toggleTodo(index)} />
+        <input
+          className="toggle"
+          type="checkbox"
+          aria-label={`${todo.done ? "Mark active" : "Mark complete"}: ${todo.text}`}
+          checked={todo.done}
+          onChange={() => toggleTodo(todo.id)}
+        />
         <label onDoubleClick={handleEdit}>{todo.text}</label>
-        <button className="destroy" onClick={() => deleteTodo(index)}></button>
+        <button className="destroy" aria-label={`Delete ${todo.text}`} onClick={() => deleteTodo(todo.id)}></button>
       </div>
       {isEditing && (
         <input

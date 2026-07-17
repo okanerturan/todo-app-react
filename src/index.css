@@ -296,8 +296,10 @@ body {
   display: inline;
 }
 
-.filters li a {
+.filters li button {
   color: inherit;
+  background: none;
+  font: inherit;
   margin: 3px;
   padding: 3px 7px;
   text-decoration: none;
@@ -306,11 +308,12 @@ body {
   cursor: pointer; /* Because of Mavo: we don't use the href attribute in such situations */
 }
 
-.filters li a:hover {
+.filters li button:hover,
+.filters li button:focus-visible {
   border-color: rgba(175, 47, 47, 0.1);
 }
 
-.filters li a.selected {
+.filters li button.selected {
   border-color: rgba(175, 47, 47, 0.2);
 }
 
