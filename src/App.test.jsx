@@ -56,6 +56,35 @@ describe("todo behavior", () => {
     expect(screen.getByText("renamed active")).toBeInTheDocument();
   });
 
+  it("focuses the editor and cancels a change with Escape", async () => {
+    seedTodos([{ text: "keep this wording", done: false }]);
+    const user = userEvent.setup();
+    renderApp();
+
+    await user.dblClick(screen.getByText("keep this wording"));
+    const editor = screen.getByRole("textbox", { name: "Edit keep this wording" });
+    expect(editor).toHaveFocus();
+    await user.clear(editor);
+    await user.type(editor, "discard this{Escape}");
+
+    expect(screen.queryByRole("textbox", { name: "Edit keep this wording" })).not.toBeInTheDocument();
+    expect(screen.getByText("keep this wording")).toBeInTheDocument();
+  });
+
+  it("removes a task when its saved edit is empty", async () => {
+    seedTodos([{ text: "remove through edit", done: false }]);
+    const user = userEvent.setup();
+    renderApp();
+
+    await user.dblClick(screen.getByText("remove through edit"));
+    const editor = screen.getByRole("textbox", { name: "Edit remove through edit" });
+    await user.clear(editor);
+    await user.keyboard("{Enter}");
+
+    expect(screen.queryByText("remove through edit")).not.toBeInTheDocument();
+    expect(screen.getByText("The ledger is clear.")).toBeInTheDocument();
+  });
+
   it("adds, completes, filters, and clears a task through the public UI", async () => {
     seedTodos([]);
     const user = userEvent.setup();

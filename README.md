@@ -1,43 +1,38 @@
-# React ToDo App
+# Task Ledger
 
-This project is a React implementation of the ToDo application by [Dmitry Sharabin](https://codepen.io/dmitrysharabin/pen/MWgQNYZ), developed as part of the Patika Bootcamp Week 12 assignment. Its visual foundation comes from the original project and has been adapted for the React implementation and accessible controls.
+A local-first React task workspace with stable task identity, keyboard editing, filtering, and browser persistence. It is intentionally presented as a learning archive: compact in scope, but explicit about the behavioral bugs and accessibility details that make small interfaces trustworthy.
 
+[Open the live Task Ledger](https://todo-app-react-elk.pages.dev/)
 
-## Live Demo
+![Task Ledger with four representative tasks, completion state, filters, and live summary](docs/screenshots/task-ledger.png)
 
-You can try out the live demo of the application [here](https://todo-app-react-elk.pages.dev/).
-![React ToDo App Screen Recording](screen-recording.gif)
+## What the current version proves
 
+- Adds, completes, filters, edits, deletes, and clears tasks through accessible controls.
+- Assigns each task a stable identifier, so acting on a filtered result always updates the intended persisted task.
+- Focuses and selects the inline editor; Enter saves, Escape cancels, and saving an empty edit removes the task.
+- Migrates older browser records without identifiers and recovers safely from malformed storage.
+- Shows explicit empty, filtered, completion, and browser-only persistence states.
+- Uses a responsive authored interface with reduced-motion support and no external visual assets or font requests.
 
-## Features
+## Origin and provenance
 
-- **Add a ToDo**: Easily add new tasks to your ToDo list.
-- **Edit a ToDo**: Double-click to edit an existing task.
-- **Delete a ToDo**: Remove tasks from your list.
-- **Complete a ToDo**: Mark tasks as completed with a simple checkbox.
-- **Filter Tasks**: View tasks based on their status - All, Active, or Completed.
-- **Clear Completed**: Remove all completed tasks from the list.
-- **Persistent State**: ToDos are saved in the browser's local storage, so your tasks remain even after refreshing the page.
+The project began as the Patika Front End Bootcamp week 12 React assignment, following the TodoMVC-style application by [Dmitry Sharabin](https://codepen.io/dmitrysharabin/pen/MWgQNYZ). That origin remains part of the project history rather than being hidden.
 
-## Context API
+The current Task Ledger presentation, stable-ID data model, defensive storage migration, keyboard editing behavior, accessible controls, tests, metadata, and CI were implemented in this repository. The original interaction recording is preserved below as a before-state artifact.
 
-The application uses React's Context API to manage state globally, allowing for efficient management of the ToDo list data without passing props down through many levels of components.
+## Architecture
 
-Each task receives a stable identifier. Filtering therefore changes only what is displayed: editing, completing, or deleting an item always targets that task in the full persisted list. Existing browser data without identifiers is migrated when loaded, and malformed storage falls back safely to the starter list.
+- `TodoProvider` owns tasks, filters, persistence, migration, and mutations.
+- `useTodos` exposes the context through one guarded consumer hook.
+- `Header`, `TodoList`, `TodoItem`, and `Footer` keep input, collection, item, and filter concerns separate.
+- React Testing Library drives the same labeled controls exposed by the public UI.
 
-## Components
-
-The application is structured into several React components:
-
-- **App**: The main component wrapping other components and managing state.
-- **Header**: Contains the input for adding new ToDos.
-- **TodoList**: Renders the list of ToDo items.
-- **TodoItem**: Represents each individual ToDo with options to edit and delete.
-- **Footer**: Displays remaining item count and filter options.
+Tasks are stored under the browser-local `todos` key as objects with `id`, `text`, and `done` fields. There is no account, backend, analytics pipeline, or cross-device sync. Clearing this site’s browser data removes the list.
 
 ## Verification
 
-The behavior suite drives the public UI through add, complete, filter, edit, delete, and clear flows. It also protects filtered-list identity and malformed-storage recovery. CI runs these checks alongside lint and the production build:
+The behavior suite covers filtered-list identity, add/complete/filter/clear flows, edit saving and cancellation, empty-edit removal, and malformed-storage recovery. CI runs those checks before linting and producing the deployment build.
 
 ```sh
 # Node.js 20.19 or newer
@@ -46,3 +41,12 @@ npm test
 npm run lint
 npm run build
 ```
+
+## Earlier iteration
+
+<details>
+<summary>Original bootcamp interaction recording</summary>
+
+![Original React ToDo assignment recording](screen-recording.gif)
+
+</details>

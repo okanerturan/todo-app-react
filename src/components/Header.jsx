@@ -16,15 +16,19 @@ function Header() {
 
   return (
     <header className="header">
-      <h1>todos</h1>
+      <p className="eyebrow">Task ledger</p>
+      <h2 id="ledger-title">What needs your attention?</h2>
       <form onSubmit={handleSubmit}>
+        <label className="sr-only" htmlFor="new-todo">New task</label>
         <input
+          id="new-todo"
           className="new-todo"
           placeholder="What needs to be done?"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
           autoFocus
         />
+        <button type="submit">Add task</button>
       </form>
     </header>
   );
