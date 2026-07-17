@@ -49,7 +49,10 @@ export function TodoProvider({ children }) {
   }, []);
 
   const updateTodo = useCallback((id, newText) => {
-    setTodos((previous) => previous.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)));
+    const trimmedText = newText.trim();
+    setTodos((previous) => trimmedText
+      ? previous.map((todo) => (todo.id === id ? { ...todo, text: trimmedText } : todo))
+      : previous.filter((todo) => todo.id !== id));
   }, []);
 
   const deleteTodo = useCallback((id) => {

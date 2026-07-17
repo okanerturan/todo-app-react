@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { useTodos } from "../useTodos";
 
@@ -6,10 +6,18 @@ function TodoItem({ todo }) {
   const { toggleTodo, deleteTodo, updateTodo } = useTodos();
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
+  const editorRef = useRef(null);
 
   useEffect(() => {
     setEditText(todo.text);
   }, [todo.text]);
+
+  useEffect(() => {
+    if (isEditing) {
+      editorRef.current?.focus();
+      editorRef.current?.select();
+    }
+  }, [isEditing]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -22,7 +30,11 @@ function TodoItem({ todo }) {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleBlur();
+      e.currentTarget.blur();
+    }
+    if (e.key === "Escape") {
+      setEditText(todo.text);
+      setIsEditing(false);
     }
   };
 
@@ -41,7 +53,9 @@ function TodoItem({ todo }) {
       </div>
       {isEditing && (
         <input
+          ref={editorRef}
           className="edit"
+          aria-label={`Edit ${todo.text}`}
           value={editText}
           onChange={(e) => setEditText(e.target.value)}
           onBlur={handleBlur}
